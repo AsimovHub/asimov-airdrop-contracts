@@ -1,0 +1,10 @@
+node_modules/*
+.idea/*
+build/*
+.openzeppelin/*
+yarn.lock
+
+
+.secret
+
+*artifacts*
