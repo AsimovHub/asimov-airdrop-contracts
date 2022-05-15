@@ -62,6 +62,8 @@ contract TokenDistributor is Ownable {
     }
 
     function revertFinalize() external onlyOwner {
+        require(isClosed(), "Airdrop has not been finalized");
+        require(!isAirdropCompleted(), "Airdrop has been finished");
         _filterCount = 0;
         delete _finalQualifiedParticipants;
     }
@@ -90,7 +92,7 @@ contract TokenDistributor is Ownable {
         }
     }
 
-    function getQualifiedParticipafnts() public view returns (address[] memory) {
+    function getQualifiedParticipants() public view returns (address[] memory) {
         require(isClosed(), "Airdrop not finalized yet");
         return _finalQualifiedParticipants;
     }

@@ -24,6 +24,10 @@ contract DistributorDeployer is Ownable {
     // map caller to its current airdrop contract
     mapping (address => address) _activeAirdrops;
 
+    uint256 internal _airdropCounter;
+
+    event Airdrop(address indexed creator, address indexed tokenContract, address indexed nftContract);
+
     constructor() {
         _discountContract = 0x046582b91d68cc5FDF02A045920c017140A8E503;
         _paymentAddress = 0x000000000000000000000000000000000000dEaD;
@@ -40,6 +44,12 @@ contract DistributorDeployer is Ownable {
 
         TokenDistributor token = new TokenDistributor(msg.sender, tokenContract_, nftContract_);
         _activeAirdrops[msg.sender] = address(token);
+        emit Airdrop(msg.sender, tokenContract_, nftContract_);
+        _airdropCounter++;
+    }
+
+    function getAirdropCounter() external view returns (uint256) {
+        return _airdropCounter;
     }
 
     function getAirdropByOwner(address owner_) external view returns (address) {
@@ -74,7 +84,7 @@ contract DistributorDeployer is Ownable {
     }
 
     function getPaymentAddress() external view returns (address) {
-        return _discountContract;
+        return _paymentAddress;
     }
 
     function getDistributionFee() external view returns (uint256) {
